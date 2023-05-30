@@ -11,7 +11,7 @@ import results
 import valideasy
 import error_frame
 import import_export_query
-
+import translations
 
 ID_IMPORT_QUERY = wx.NewId()
 
@@ -46,6 +46,9 @@ class MainFrame(wx.Frame):
         self.main_sizer.Add(btn_file_chooser, 0, wx.ALL | wx.ALIGN_CENTER, 5)
         self.main_panel.SetSizer(self.main_sizer)
 
+        # translations db chooser
+        self.translations_chooser = translations.Translations(self.main_panel)
+        self.main_sizer.Add(self.translations_chooser, 0, wx.ALL | wx.ALIGN_LEFT, 10)
 
     def show_nodes_panel(self, event):
         """

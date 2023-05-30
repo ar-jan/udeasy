@@ -21,7 +21,8 @@ def get_metadata(sent):
     :return: the string containing the metadata (text and sent_id)
     """
     root = sent.get_tree()
-    translation = translations.get_translation(root._sent_id)
+    translator = translations.Translations(None) # Parent isn't used for existing singleton
+    translation = translator.get_translation(root._sent_id)
     return f'# text = {root.get_sentence()}\n' \
            f'# sent_id = {root._sent_id}\n' \
            f'# translation = {translation}\n'

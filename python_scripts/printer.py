@@ -1,5 +1,6 @@
 import pandas as pd
 import stats_func
+import translations
 
 
 def node_to_conllu(node):
@@ -15,12 +16,15 @@ def node_to_conllu(node):
 def get_metadata(sent):
     """
     This function takes a sentence as argument and returns the string containing the metadata
+    Hacked to look up the translation of the sentence.
     :param sent: the sentence
     :return: the string containing the metadata (text and sent_id)
     """
     root = sent.get_tree()
+    translation = translations.get_translation(root._sent_id)
     return f'# text = {root.get_sentence()}\n' \
-           f'# sent_id = {root._sent_id}\n'
+           f'# sent_id = {root._sent_id}\n' \
+           f'# translation = {translation}\n'
 
 
 def sent_to_conllu(sent):

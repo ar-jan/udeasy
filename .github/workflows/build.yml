@@ -67,6 +67,7 @@ jobs:
         pip install -U tabulate
         pip install -U pandas
         pip install -U Pillow
+        pip install -U PyYAML
         pip install -U wxPython -v
     - name: Build with pyinstaller for ${{matrix.TARGET}}
       run: ${{matrix.CMD_BUILD}}

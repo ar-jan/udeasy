@@ -58,12 +58,19 @@ class Translations(wx.Panel):
         self.Parent.Layout()
 
         if hasattr(self, "file_path"):
-            self.translationsdb = self.file_path
-            self.conn = sqlite3.connect(self.translationsdb)
+            self.conn = sqlite3.connect(self.file_path)
             self.cur = self.conn.cursor()
 
 
-    def get_translation(self, sent_id):
+    def set_language(self, language):
+        """ Receives a two-letter language code and stores it in the Translations singleton instance.
+        """
+        # self.language = language
+        self.wordforms_table = f'wordforms_{language}'
+        print(f'Translations: Set wordforms_table: {self.wordforms_table}')
+
+
+    def get_sentence_translation(self, sent_id):
         """ Takes a sentence_id as argument, and returns the corresponding translation
         :param sent_id: the sentence_id
         :return: string with the sentence translation
@@ -74,9 +81,25 @@ class Translations(wx.Panel):
                 FROM sentences
                 WHERE sentence_id = :sent_id;
                 ''', {'sent_id': sent_id}
-                ).fetchone()[0]
+                ).fetchone()
 
-            return translation
+            return translation[0] if translation else ''
 
         else:
-            return None
+            return ''
+
+
+    def get_word_translation(self, wordform):
+        if self.cur:
+            translation = self.cur.execute(
+                f''' SELECT translation
+                FROM {self.wordforms_table}
+                -- Not using LIKE for wordform case
+                WHERE wordform = :wordform;
+                ''', {'wordform': wordform}
+                ).fetchone()
+
+            return translation[0] if translation else ''
+
+        else:
+            return ''

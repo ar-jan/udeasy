@@ -1,4 +1,7 @@
+import os
 import wx
+
+import translations
 
 
 class ChooseFile(wx.Panel):
@@ -42,6 +45,12 @@ class ChooseFile(wx.Panel):
             self.selected_file.Destroy()
         setattr(self, "second_sizer", wx.BoxSizer(wx.HORIZONTAL))
         setattr(self, "selected_file", wx.StaticText(self, label=f"Selected file: {getattr(self, 'file_path')}"))
+        if hasattr(self, "file_path"):
+            translator = translations.Translations(None) # Parent isn't used for existing singleton
+            filename = os.path.basename(self.file_path)
+            language = filename[:2]
+            print(f'choose_file: language: {language}')
+            translator.set_language(language)
         self.second_sizer.Add(self.selected_file, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.main_sizer.Add(self.second_sizer, 0, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(self.main_sizer)

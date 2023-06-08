@@ -37,18 +37,22 @@ class MainFrame(wx.Frame):
         title = wx.StaticText(self.main_panel, label="Welcome to udeasy")
         title.SetFont(wx.Font(20, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
 
+
+
         # file chooser
         self.main_sizer.Add(title, 0, wx.ALL | wx.CENTER, 30)
         self.file_chooser = choose_file.ChooseFile(self.main_panel)
         self.main_sizer.Add(self.file_chooser, 0, wx.ALL | wx.ALIGN_LEFT, 10)
+
+        # translations db chooser
+        self.translations_chooser = translations.Translations(self.main_panel)
+        self.main_sizer.Add(self.translations_chooser, 0, wx.ALL | wx.ALIGN_LEFT, 10)
+
         btn_file_chooser = wx.Button(self.main_panel, label="Confirm")
         btn_file_chooser.Bind(wx.EVT_BUTTON, self.show_nodes_panel)
         self.main_sizer.Add(btn_file_chooser, 0, wx.ALL | wx.ALIGN_CENTER, 5)
         self.main_panel.SetSizer(self.main_sizer)
 
-        # translations db chooser
-        self.translations_chooser = translations.Translations(self.main_panel)
-        self.main_sizer.Add(self.translations_chooser, 0, wx.ALL | wx.ALIGN_LEFT, 10)
 
     def show_nodes_panel(self, event):
         """

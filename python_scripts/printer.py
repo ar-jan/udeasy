@@ -1,4 +1,5 @@
 import pandas as pd
+
 import stats_func
 import translations
 
@@ -8,9 +9,12 @@ def node_to_conllu(node):
     This function takes a node as argument and returns a string corresponding to the token in the conllu format
     :param node: the node
     :return: the string in the conllu format
+    Hacked to append the translation of the wordform.
     """
+    translator = translations.Translations(None) # Parent isn't used for existing singleton
+    word_translation = translator.get_word_translation(node.form)
     return f'{node._ord}\t{node.form}\t{node.lemma}\t{node.upos}\t{node.xpos}\t{str(node.feats)}' \
-           f'\t{node._parent._ord}\t{node.deprel}\t{node._raw_deps}\t{str(node.misc)}'
+           f'\t{node._parent._ord}\t{node.deprel}\t{node._raw_deps}\t{str(node.misc)}\ttransl: {word_translation}'
 
 
 def get_metadata(sent):
@@ -20,9 +24,9 @@ def get_metadata(sent):
     :param sent: the sentence
     :return: the string containing the metadata (text and sent_id)
     """
-    root = sent.get_tree()
     translator = translations.Translations(None) # Parent isn't used for existing singleton
-    translation = translator.get_translation(root._sent_id)
+    root = sent.get_tree()
+    translation = translator.get_sentence_translation(root._sent_id)
     return f'# text = {root.get_sentence()}\n' \
            f'# sent_id = {root._sent_id}\n' \
            f'# translation = {translation}\n'
